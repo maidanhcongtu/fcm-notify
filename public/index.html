@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Welcome to Firebase Hosting</title>
+
+        <!-- update the version number as needed -->
+        <script src="/__/firebase/5.5.6/firebase-app.js"></script>
+        <!-- include only the Firebase features as you need -->
+        <script src="/__/firebase/5.5.6/firebase-auth.js"></script>
+        <script src="/__/firebase/5.5.6/firebase-database.js"></script>
+        <script src="/__/firebase/5.5.6/firebase-messaging.js"></script>
+        <script src="/__/firebase/5.5.6/firebase-storage.js"></script>
+        <!-- initialize the SDK after all desired features are loaded -->
+        <script src="/__/firebase/init.js"></script>
+		<link rel="manifest" href="/manifest.json">
+    </head>
+    <body>
+        
+        <button onclick="askPermission()">ask permission</button>
+		<button onclick="signin()">sigin</button>
+	
+	<script>
+        // [START get_messaging_object]
+        // Retrieve Firebase Messaging object.
+        const messaging = firebase.messaging();
+            // [END get_messaging_object]
+      // [START set_public_vapid_key]
+      // Add the public key generated from the console here.
+            messaging.usePublicVapidKey('BNGWveLPDD6oeSYChP55CkpdMOlk2RYyZkK6l58OS-iVtYx31PeKzVSvoFSfx7ubrcuhhg2B-7mWT2OFrjof_ik');
+      // [END set_public_vapid_key]
+      // IDs of divs that display Instance ID token UI or request permission UI.
+      
+        function signin() {
+            firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(result) {
+              // This gives you a Google Access Token. You can use it to access the Google API.
+              var token = result.credential.accessToken;
+              console.log("accessToken");
+              console.log(accessToken);
+              // The signed-in user info.
+              var user = result.user;
+              // ...
+            }).catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // ...
+            });
+
+        }
+        function askPermission() {
+            messaging.requestPermission().then(function() {
+            console.log('Notification permission granted.');
+      
+            }).catch(function(err) {
+                        console.log('Unable to get permission to notify.', err);
+            });
+        }
+
+        messaging.getToken().then(function(refreshedToken) {
+          console.log('Token refreshed.');
+          console.log(refreshedToken);
+
+        }).catch(function(err) {
+          console.log('Unable to retrieve refreshed token ', err);
+        });
+        
+
+      // [START refresh_token]
+      // Callback fired if Instance ID token is updated.
+      messaging.onTokenRefresh(function() {
+        messaging.getToken().then(function(refreshedToken) {
+          console.log('Token refreshed.');
+          console.log(refreshedToken);
+
+        }).catch(function(err) {
+          console.log('Unable to retrieve refreshed token ', err);
+        });
+      });
+      // [END refresh_token]
+      // [START receive_message]
+      // Handle incoming messages. Called when:
+      // - a message is received while the app has focus
+      // - the user clicks on an app notification created by a service worker
+      //   `messaging.setBackgroundMessageHandler` handler.
+      messaging.onMessage(function(payload) {
+        console.log('Message received. ', payload);
+        // [START_EXCLUDE]
+        // Update the UI to include the received message.
+        // [END_EXCLUDE]
+      });
+      
+		</script>
+    </body>
+</html>
