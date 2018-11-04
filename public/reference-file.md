@@ -1,5 +1,5 @@
 Msg format: https://firebase.googleblog.com/2018/05/web-notifications-api-support-now.html
-Msg format: https://firebase.google.com/docs/cloud-messaging/auth-server
+Auth-server for sending msg: https://firebase.google.com/docs/cloud-messaging/auth-server
 Service_Worker_API: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
 
 
